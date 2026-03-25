@@ -1,0 +1,10 @@
+# 数据库 - 已更新到最新版本
+mysql-connector-python==9.4.0
+
+# 数据处理 - 已更新到最新稳定版本
+pandas==2.3.1
+numpy==2.2.6
+openpyxl==3.1.5
+
+# 日期处理 - 已更新
+python-dateutil==2.9.0

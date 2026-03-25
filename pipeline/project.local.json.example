@@ -1,0 +1,9 @@
+{
+  "STUDY_ID": "YOUR_STUDY_ID",
+  "CODELIST_TABLE_NAME": "VC05_YOURSTUDY_CODELIST",
+  "METADATA_TABLE_NAME": "VC05_YOURSTUDY_METADATA",
+  "TRANSDATA_VIEW_NAME": "VC05_YOURSTUDY_TRANSDATA",
+  "M5_PROJECT_NAME": "YOUR_STUDY_ID",
+  "ROOT_PATH": "/path/to/sdtm-spec-forge/pipeline",
+  "RAW_DATA_ROOT_PATH": "/path/to/sdtm-spec-forge/pipeline/studySpecific/YOUR_STUDY_ID/01_RawData"
+}

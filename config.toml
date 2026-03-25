@@ -1,0 +1,6 @@
+study_id    = "YOUR_STUDY_ID"
+data_dir    = "./data"
+sdtmig      = "./master/SDTMIG_v3.4.xlsx"
+terminology = "./master/SDTM Terminology.xlsx"
+mapping     = "./data/YOUR_STUDY_ID_OperationConf.xlsx"
+output      = "./output"

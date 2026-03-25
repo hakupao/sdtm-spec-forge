@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Local config
+project.local.json
+.env
+
+# Logs
+*.log
+missing_columns_log.txt
+
+# Study-specific: only track code — exclude data and generated outputs
+studySpecific/**/*.csv
+studySpecific/**/01_RawData/
+studySpecific/**/ai_summary.md
+studySpecific/**/batch_ai_summary.md
+studySpecific/**/detailed_report.html
+studySpecific/**/index.html
+
+# Experiment outputs
+experiment/combine_test/TEST_COMBINE/
+
+# Temp Excel files
+~$*.xlsx
+*.xlk

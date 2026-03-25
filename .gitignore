@@ -1,0 +1,62 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# Local config (contains machine-specific paths)
+pipeline/project.local.json
+
+# Claude Code
+.claude/
+
+# Generated outputs (reproducible from pipeline)
+pipeline/studySpecific/*/02_Cleaning/
+pipeline/studySpecific/*/03_Format/
+pipeline/studySpecific/*/04_SDTM/
+pipeline/studySpecific/*/05_Inputfile/
+pipeline/studySpecific/*/06_Inputpackage/
+pipeline/studySpecific/*/08_Validation/
+pipeline/studySpecific/*/20_Doc/
+pipeline/studySpecific/*/30_Modified_Evidence/
+output/
+
+# Data files (study-specific, not for public repo)
+data/
+master/
+
+# Legacy directory names (local workspace)
+SDTM_Data_Set/
+SDTM_Master/
+SDTM_*/
+
+# Auto-generated summaries
+file_fields_summary.csv
+
+# Separate sub-projects
+sdtm-spec-creator/
+
+# Study-specific config files (may contain proprietary mappings)
+pipeline/studySpecific/*/*.xlsx
+pipeline/studySpecific/*/*.xlsm
