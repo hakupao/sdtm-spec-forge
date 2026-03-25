@@ -54,9 +54,10 @@ SDTM_*/
 # Auto-generated summaries
 file_fields_summary.csv
 
-# Separate sub-projects
-sdtm-spec-creator/
+# Rust build artifacts
+spec-creator/target/
 
 # Study-specific config files (may contain proprietary mappings)
 pipeline/studySpecific/*/*.xlsx
 pipeline/studySpecific/*/*.xlsm
+

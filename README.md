@@ -72,17 +72,17 @@ python VC_PS02_csv2json.py
 
 ```
 sdtm-spec-forge/
-├── pipeline/                       # Core application
-│   ├── VC_BC01_constant.py         # Constants & configuration
-│   ├── VC_BC02_baseUtils.py        # Logging, DB, filesystem utilities
-│   ├── VC_BC03_fetchConfig.py      # Excel config parser
-│   ├── VC_BC04_operateType.py      # Data transformation dispatcher
-│   ├── VC_BC06_operateTypeFunctions.py  # Operation type implementations
-│   ├── VC_OP01–OP05*.py            # Pipeline stage scripts
-│   ├── VC_PS01–PS02*.py            # Post-processing & packaging
+├── pipeline/                       # Python ETL pipeline (Raw → SDTM → M5)
+│   ├── VC_BC01–06*.py              # Base components
+│   ├── VC_OP01–05*.py              # Pipeline stage scripts
+│   ├── VC_PS01–02*.py              # Post-processing & packaging
 │   ├── studySpecific/              # Per-study functions
 │   │   └── example_study/          # Example study template
 │   └── experiment/                 # Experimental features
+├── spec-creator/                   # Rust CLI tool (SDTM → Excel spec)
+│   ├── src/                        # Rust source code
+│   ├── Cargo.toml                  # Rust dependencies
+│   └── README.md                   # Spec creator usage (Japanese)
 ├── config.toml                     # Root configuration template
 └── docs/                           # Requirements documentation
 ```
