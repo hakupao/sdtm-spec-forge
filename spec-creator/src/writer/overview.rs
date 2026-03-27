@@ -49,7 +49,7 @@ pub fn write_overview(
     // Column widths
     sheet.set_column_width(0, 5)?;
     sheet.set_column_width(1, 20)?;
-    sheet.set_column_width(2, 60)?;
+    sheet.set_column_width(2, 80)?;
 
     // Title
     let header = styles::header_format();

@@ -107,7 +107,7 @@ pub fn write_data_trace(
     let cell = styles::cell_format();
 
     // Column widths
-    let widths = [8.0, 35.0, 15.0, 30.0, 35.0];
+    let widths = [8.0, 35.0, 15.0, 50.0, 50.0];
     for (i, w) in widths.iter().enumerate() {
         sheet.set_column_width(i as u16, *w)?;
     }

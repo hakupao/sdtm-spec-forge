@@ -68,6 +68,50 @@ python VC_PS01_makeInputCSV.py
 python VC_PS02_csv2json.py
 ```
 
+## Generate Excel Specification
+
+The repository also includes a Rust CLI under `spec-creator/` that generates the Excel dataset specification workbook from SDTM CSV files and metadata.
+
+### Prerequisites
+
+- Rust toolchain (`rustup`, `cargo`)
+- A valid root-level `config.toml`
+
+The default `config.toml` in this repository already points to:
+
+- `./SDTM_Data_Set` for SDTM CSV files
+- `./SDTM_Master/SDTMIG_v3.4.xlsx`
+- `./SDTM_Master/SDTM Terminology.xlsx`
+- `./SDTM_Data_Set/ENSEMBLE_OperationConf.xlsx`
+- `./output` for generated Excel files
+
+### Run with the existing config
+
+From the repository root:
+
+```powershell
+cd spec-creator
+cargo run --release -- --config ..\config.toml
+```
+
+### Build once, then run the executable
+
+```powershell
+cd spec-creator
+cargo build --release
+.\target\release\sdtm-spec-creator.exe --config ..\config.toml
+```
+
+### Output
+
+The generated workbook is written to:
+
+```text
+output\<STUDY_ID>_SDTM_Dataset_Specification_<YYYYMMDD>.xlsx
+```
+
+With the current sample config, the output file is generated under `output/` with study ID `ENSEMBLE`.
+
 ## Project Structure
 
 ```
