@@ -48,8 +48,7 @@ master/
 
 # Legacy directory names (local workspace)
 SDTM_Data_Set/
-SDTM_Master/
-SDTM_*/
+SDTM_ENSEMBLE/
 
 # Auto-generated summaries
 file_fields_summary.csv
