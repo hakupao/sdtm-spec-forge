@@ -1,152 +1,138 @@
-# SDTM Spec Forge
+<div align="center">
 
-A config-driven Python pipeline that transforms raw clinical trial data into [CDISC SDTM](https://www.cdisc.org/standards/foundational/sdtm) compliant datasets and M5 submission packages.
+# SDTM Dataset Specification Creator
 
-## Overview
+**Project codename: SDTM Spec Forge**
 
-SDTM Spec Forge (codename **VAPORCONE**) automates the end-to-end conversion of raw clinical data into regulatory-ready SDTM tabulation datasets. It supports 80+ SDTM domains and generates complete M5 data packages (ZIP) suitable for regulatory submission.
+Generate a bilingual Excel specification workbook from SDTM datasets, official CDISC metadata, and study-specific mapping rules.
 
-### Pipeline
+Built for teams that already have SDTM deliverables, but still need a readable client-facing specification package for Japanese delivery, review, and handoff.
 
-```
-Raw Data (CSV)
-  → VC_OP01  Cleaning        — field filtering, row validation
-  → VC_OP02  CodeList         — terminology code list insertion
-  → VC_OP03  Metadata         — metadata enrichment via MySQL
-  → VC_OP04  Format           — data formatting with indexes
-  → VC_OP05  Mapping          — SDTM field mapping (multiprocessing)
-  → VC_PS01  Input CSV        — generate submission-ready CSVs
-  → VC_PS02  JSON Package     — CSV → JSON → M5 ZIP archive
-```
+<p>
+  <a href="#quick-demo"><strong>Quick Demo</strong></a> |
+  <a href="#what-it-generates"><strong>Workbook Preview</strong></a> |
+  <a href="#where-each-part-fits"><strong>Repository Map</strong></a> |
+  <a href="spec-creator/README.md"><strong>CLI Details</strong></a> |
+  <a href="pipeline/README.md"><strong>Pipeline Details</strong></a>
+</p>
 
-## Requirements
+<p>
+  <img src="https://img.shields.io/badge/Rust-2021-000000?logo=rust" alt="Rust 2021" />
+  <img src="https://img.shields.io/badge/Python-Upstream%20pipeline-3776AB?logo=python&logoColor=white" alt="Python upstream pipeline" />
+  <img src="https://img.shields.io/badge/Output-Excel%20Workbook-217346?logo=microsoftexcel&logoColor=white" alt="Excel workbook output" />
+  <img src="https://img.shields.io/badge/CDISC-SDTMIG%20v3.4-0F766E" alt="CDISC SDTMIG v3.4" />
+  <img src="https://img.shields.io/badge/License-MIT-F59E0B" alt="MIT license" />
+  <a href="#quick-demo"><img src="https://img.shields.io/badge/Try%20it-Included%20sample-2563EB" alt="Try the included sample" /></a>
+</p>
 
-- Python 3.11+
-- MySQL 8.0+
+</div>
 
-### Python Dependencies
+<p align="center">
+  <img src="docs/assets/readme-preview.svg" alt="Preview of the generated SDTM dataset specification workbook" width="1100" />
+</p>
 
-```
-mysql-connector-python >= 9.4.0
-pandas >= 2.3.1
-numpy >= 2.2.6
-openpyxl >= 3.1.5
-python-dateutil >= 2.9.0
-```
+## Why this project exists
 
-## Quick Start
+Having SDTM datasets is not the same thing as having a document a client can read. In practice, Japanese-facing delivery often still needs an Excel specification workbook that explains domains, variables, codelists, and mapping rationale in a format that PMs, reviewers, and clients can browse without opening code.
 
-```bash
-# 1. Clone and install dependencies
-git clone https://github.com/hakupao/sdtm-spec-forge.git
-cd sdtm-spec-forge/pipeline
-pip install -r requirements.txt
+This repository fills that gap. It takes the SDTM assets you already have, combines them with SDTMIG and Terminology metadata plus study-specific `OperationConf.xlsx` mappings, then generates a workbook that is much closer to a delivery document than a raw dataset folder.
 
-# 2. Create local config from template
-cp project.local.json.example project.local.json
-# Edit project.local.json with your study ID and paths
+It is not trying to replace Pinnacle 21 or formal CDISC validation. It is a practical bridge between standardized data and a client-facing specification package.
 
-# 3. (Optional) Configure database via environment variables
-export VC_DB_HOST=127.0.0.1
-export VC_DB_USER=root
-export VC_DB_PASSWORD=yourpassword
-export VC_DB_DATABASE=VC-DataMigration_2.0
+## Core idea
 
-# 4. Prepare your study data
-#    - Create studySpecific/<YOUR_STUDY_ID>/VC_BC05_studyFunctions.py
-#    - Place raw CSVs in studySpecific/<YOUR_STUDY_ID>/01_RawData/
-#    - Place your OperationConf.xlsx in the data directory
-#    - Place SDTMIG and Terminology XLSX in the master directory
+| Input | Engine | Output |
+| --- | --- | --- |
+| `SDTM CSV` files, `SDTMIG v3.4`, `SDTM Terminology`, and `<STUDY_ID>_OperationConf.xlsx` | A Rust CLI that reads metadata, analyzes domain structure, matches codelists, and writes Excel sheets | A multi-tab workbook for delivery, review, QA, and study handoff |
 
-# 5. Run the pipeline
-python VC_OP01_cleaning.py
-python VC_OP02_insertCodeList.py
-python VC_OP03_insertMetadata.py
-python VC_OP04_format.py
-python VC_OP05_mapping.py
-python VC_PS01_makeInputCSV.py
-python VC_PS02_csv2json.py
-```
+## What it generates
 
-## Generate Excel Specification
+Using the included `ENSEMBLE` sample configuration, the current generator successfully produces a workbook with:
 
-The repository also includes a Rust CLI under `spec-creator/` that generates the Excel dataset specification workbook from SDTM CSV files and metadata.
+- 8 SDTM domains loaded from CSV
+- 17 sheets in the final Excel file
+- dataset overview, domain trees, mapping trace, per-domain variable lists, codelist matching, and notes
+- bilingual content: official SDTM metadata in English, operational annotations in Japanese where available
 
-### Prerequisites
+### Workbook sections
 
-- Rust toolchain (`rustup`, `cargo`)
-- A valid root-level `config.toml`
+| Sheet group | Purpose |
+| --- | --- |
+| `Cover` / `Overview` / `ChangeHistory` | Document identity, navigation, and revision history |
+| `DatasetList` | Domain-level summary with structure, sort key, record count, and hierarchy |
+| `DomainTree` / `DomainTable` | Human-readable classification breakdown such as `CAT -> SCAT -> TRT` |
+| `DataTrace` | Trace from EDC and mapping definitions to SDTM variables |
+| `CM`, `DM`, `DS`, ... | Per-domain variable metadata sheets |
+| `Codelist` | Controlled terminology matches found from actual data values |
+| `Notes` | Manual notes and handoff-ready commentary |
 
-The default `config.toml` in this repository already points to:
+## Quick demo
 
-- `./SDTM_Data_Set` for SDTM CSV files
-- `./SDTM_Master/SDTMIG_v3.4.xlsx`
-- `./SDTM_Master/SDTM Terminology.xlsx`
-- `./SDTM_Data_Set/ENSEMBLE_OperationConf.xlsx`
-- `./output` for generated Excel files
-
-### Run with the existing config
-
-From the repository root:
+Because the output is an Excel workbook built from local study files, the fastest way to evaluate the project is to run the included sample locally.
 
 ```powershell
-cd spec-creator
+git clone https://github.com/hakupao/sdtm-spec-forge.git
+cd sdtm-spec-forge\spec-creator
 cargo run --release -- --config ..\config.toml
 ```
 
-### Build once, then run the executable
-
-```powershell
-cd spec-creator
-cargo build --release
-.\target\release\sdtm-spec-creator.exe --config ..\config.toml
-```
-
-### Output
-
-The generated workbook is written to:
+Generated file:
 
 ```text
-output\<STUDY_ID>_SDTM_Dataset_Specification_<YYYYMMDD>.xlsx
+output\ENSEMBLE_SDTM_Dataset_Specification_<YYYYMMDD>.xlsx
 ```
 
-With the current sample config, the output file is generated under `output/` with study ID `ENSEMBLE`.
+The sample config already points to repository-included paths:
 
-## Project Structure
+- `./SDTM_Data_Set`
+- `./SDTM_Master/SDTMIG_v3.4.xlsx`
+- `./SDTM_Master/SDTM Terminology.xlsx`
+- `./SDTM_Data_Set/ENSEMBLE_OperationConf.xlsx`
+- `./output`
 
-```
-sdtm-spec-forge/
-├── pipeline/                       # Python ETL pipeline (Raw → SDTM → M5)
-│   ├── VC_BC01–06*.py              # Base components
-│   ├── VC_OP01–05*.py              # Pipeline stage scripts
-│   ├── VC_PS01–02*.py              # Post-processing & packaging
-│   ├── studySpecific/              # Per-study functions
-│   │   └── example_study/          # Example study template
-│   └── experiment/                 # Experimental features
-├── spec-creator/                   # Rust CLI tool (SDTM → Excel spec)
-│   ├── src/                        # Rust source code
-│   ├── Cargo.toml                  # Rust dependencies
-│   └── README.md                   # Spec creator usage (Japanese)
-├── config.toml                     # Root configuration template
-└── docs/                           # Requirements documentation
-```
+## Best-fit use cases
 
-## Configuration
+- Preparing Japanese client delivery documents from already standardized SDTM datasets
+- Turning a raw SDTM folder into something PMs, reviewers, and clients can browse in Excel
+- Creating a repeatable spec-generation workflow instead of manually maintaining many workbook tabs
+- Bridging internal programming output and external-facing documentation during study handoff
 
-| File | Purpose |
-|------|---------|
-| `config.toml` | Root-level study ID and path configuration |
-| `pipeline/project.local.json` | Machine-specific paths and DB table names (gitignored) |
-| `<STUDY_ID>_OperationConf.xlsx` | Study-specific field mappings, code lists, and processing rules |
+## Where each part fits
 
-## Multi-Study Support
+This repository contains two related but distinct layers:
 
-Each clinical study has its own directory under `pipeline/studySpecific/` with:
-- `VC_BC05_studyFunctions.py` — study-specific data joins and transformations
-- Timestamped output folders for each pipeline run
+| Path | Role |
+| --- | --- |
+| [`spec-creator/`](spec-creator/) | Main product. Rust CLI that converts SDTM deliverables into an Excel specification workbook |
+| [`pipeline/`](pipeline/) | Upstream Python pipeline that can transform raw clinical data into SDTM datasets and M5-style packages |
+| [`docs/requirements/`](docs/requirements/) | Project notes, requirements, and background context |
+| [`config.toml`](config.toml) | Ready-to-run sample configuration for the spec generator |
 
-See `pipeline/studySpecific/example_study/` for the expected pattern.
+If you only want to evaluate the specification generator, start with `spec-creator/`. The Python pipeline is useful when this repository is used as a fuller end-to-end workflow.
+
+## Tech stack
+
+- Rust 2021
+- `clap` for CLI handling
+- `calamine` for Excel input parsing
+- `rust_xlsxwriter` for Excel generation
+- Python pipeline modules for upstream SDTM processing
+- CDISC SDTMIG v3.4 metadata and terminology sources
+
+## Current scope
+
+- Targets `SDTMIG v3.4`
+- Assumes SDTM CSV datasets already exist
+- Uses `OperationConf.xlsx` as study-specific mapping input
+- Generates Excel output, not a web UI
+- Focuses on documentation generation rather than standards validation
+
+## Related docs
+
+- [Spec creator usage guide](spec-creator/README.md)
+- [Pipeline architecture guide](pipeline/README.md)
+- [Project overview notes](docs/requirements/00_project_overview.md)
 
 ## License
 
-MIT License. See [LICENSE](LICENSE) for details.
+MIT. See [LICENSE](LICENSE).
