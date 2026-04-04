@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=700&size=30&duration=3000&pause=1000&color=4FACFE&center=true&vCenter=true&width=800&height=80&lines=SDTM+Spec+Forge;SDTMIG+规范编译+%C2%B7+数据集锻造+%C2%B7+Python+++Rust" alt="SDTM Spec Forge"/>
+<img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=700&size=30&duration=3000&pause=1000&color=4FACFE&center=true&vCenter=true&width=800&height=80&lines=SDTM+Spec+Forge;SDTMIG+%E8%A7%84%E8%8C%83%E7%BC%96%E8%AF%91+%C2%B7+%E6%95%B0%E6%8D%AE%E9%9B%86%E9%94%BB%E9%80%A0+%C2%B7+Python+++Rust" alt="SDTM Spec Forge"/>
 
 ![Python](https://img.shields.io/badge/Python-3.11+-blue?style=flat-square&logo=python)
 ![Rust](https://img.shields.io/badge/Rust-1.70+-orange?style=flat-square&logo=rust)
