@@ -2,23 +2,7 @@
 
 <div align="center">
 
-```svg
-<svg viewBox="0 0 800 120" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#4facfe;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#00f2fe;stop-opacity:1" />
-    </linearGradient>
-  </defs>
-  <rect width="800" height="120" fill="url(#grad3)" rx="10"/>
-  <text x="400" y="70" font-size="48" font-weight="bold" fill="white" text-anchor="middle" font-family="monospace">
-    SDTM Spec Forge
-  </text>
-  <text x="400" y="105" font-size="16" fill="#f0f0f0" text-anchor="middle" font-family="sans-serif">
-    SDTMIG Specification Compiler • Dataset Forge • Python + Rust
-  </text>
-</svg>
-```
+<img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=700&size=30&duration=3000&pause=1000&color=4FACFE&center=true&vCenter=true&width=800&height=80&lines=SDTM+Spec+Forge;SDTMIG+Specification+Compiler+%C2%B7+Dataset+Forge+%C2%B7+Python+++Rust" alt="SDTM Spec Forge"/>
 
 ![Python](https://img.shields.io/badge/Python-3.11+-blue?style=flat-square&logo=python)
 ![Rust](https://img.shields.io/badge/Rust-1.70+-orange?style=flat-square&logo=rust)
@@ -63,30 +47,38 @@ SDTM Spec Forge is a next-generation tool for specification-driven SDTM dataset 
 
 ---
 
+
+
+### Preview
+
+<div align="center">
+  <img src="docs/assets/readme-preview.svg" alt="SDTM Spec Forge Preview" width="700"/>
+</div>
+
 ## Architecture
 
 ```mermaid
 graph TB
-    A["SDTMIG v3.4<br/>PDF/Excel"] -->|Parse| B["SDTMIG Parser<br/>(Rust + Python)"]
-    B --> C["Domain Specs<br/>(Internal representation)"]
-    C --> D["Terminology<br/>Loader"]
+ A["SDTMIG v3.4<br/>PDF/Excel"] -->|Parse| B["SDTMIG Parser<br/>(Rust + Python)"]
+ B --> C["Domain Specs<br/>(Internal representation)"]
+ C --> D["Terminology<br/>Loader"]
 
-    D -->|codelists| E["Config Compiler<br/>(config.toml)"]
-    E --> F["Specification<br/>Object Graph"]
+ D -->|codelists| E["Config Compiler<br/>(config.toml)"]
+ E --> F["Specification<br/>Object Graph"]
 
-    F --> G["Raw Study Data<br/>(Excel/CSV/DB)"]
-    G -->|Transform| H["Dataset Forge<br/>(Python)"]
+ F --> G["Raw Study Data<br/>(Excel/CSV/DB)"]
+ G -->|Transform| H["Dataset Forge<br/>(Python)"]
 
-    H -->|Validate| I["Compliance Engine"]
-    I -->|Pass| J["📊 SDTM Datasets<br/>(dm, ae, lb, ...)"]
-    I -->|Fail| K["⚠️ Validation Report"]
+ H -->|Validate| I["Compliance Engine"]
+ I -->|Pass| J[" SDTM Datasets<br/>(dm, ae, lb, ...)"]
+ I -->|Fail| K["⚠ Validation Report"]
 
-    J --> L["📤 Output<br/>(xlsx/csv/sas)"]
+ J --> L[" Output<br/>(xlsx/csv/sas)"]
 
-    style A fill:#e3f2fd
-    style F fill:#c8e6c9
-    style J fill:#c8e6c9
-    style K fill:#ffccbc
+ style A fill:#e3f2fd
+ style F fill:#c8e6c9
+ style J fill:#c8e6c9
+ style K fill:#ffccbc
 ```
 
 ### Component Overview
